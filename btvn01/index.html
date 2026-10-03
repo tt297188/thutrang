@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTVN</title>
+    <style>
+      body {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="password" id="mat-khau" value="Thutrang05" maxlength="40" />
+    <button type="button" id="btn-mat-khau">Hiện</button>
+    <p id="demkytu"></p>
+    <script>
+      //logis show password
+      const oMatkhau = document.querySelector("#mat-khau");
+      const nut = document.querySelector("#btn-mat-khau");
+      const demmkytu = document.querySelector("#dem-ky-tu");
+      nut.addEventListener("click", () => {
+        const dangAn = oMatkhau.type === "password";
+        oMatkhau.type = dangAn ? "text" : "password";
+        nut.textContent = dangAn ? "Ẩn" : "Hiện";
+      });
+
+      function capNhatsokytu() {
+        const dodai = oMatkhau.value.length;
+        demkytu.textContent = `Max ${dodai}/40`;
+      }
+      oMatkhau.addEventListener("input", () => {
+        capNhatsokytu();
+      });
+      capNhatsokytu();
+    </script>
+  </body>
+</html>
