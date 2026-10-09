@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách đi chợ </title>
-</head>
-<body>
+    <title>Danh sách đi chợ</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
         }
+
         .container {
             width: 500px;
             margin: 50px auto;
@@ -18,13 +18,16 @@
             background-color: white;
             border-radius: 10px;
         }
+
         h1 {
             text-align: center;
         }
+
         .input-area {
             display: flex;
             gap: 10px;
         }
+
         #itemInput {
             flex: 1;
             padding: 10px;
@@ -48,6 +51,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .purchased {
             text-decoration: line-through;
             color: gray;
@@ -66,14 +70,15 @@
 </head>
 
 <body>
-
     <div class="container">
-        <h1> Danh sách đi chợ</h1>
-        <input id="mon" placeholder="Nhập tên món">
-    <button onclick="themMon()">Thêm</button>
+        <h1>Danh sách đi chợ</h1>
 
-    <p id="dem">Còn 0/0 món chưa mua</p>
-    <ul id="danhsach"></ul>
+        <input id="mon" placeholder="Nhập tên món">
+        <button type="button" onclick="themMon()">Thêm</button>
+
+        <p id="dem">Còn 0/0 món chưa mua</p>
+        <ul id="danhsach"></ul>
+    </div>
     <script>
         // Tạo danh sách món
         let ds = [];
@@ -81,7 +86,7 @@
         function themMon() {
             let ten = document.getElementById("mon").value.trim();
             // Không cho nhập rỗng
-            if (ten == "") {
+            if (ten === "") {
                 return;
             }
             ds.push({
@@ -98,25 +103,30 @@
             for (let i = 0; i < ds.length; i++) {
                 let li = document.createElement("li");
                 li.innerText = ds[i].ten;
+                li.classList.add("item");
 
-      // Nếu đã mua thì gạch ngang
-         if (ds[i].mua) {
-          li.classList.add("mua");
-             }
-      // Bấm 1 lần
-         li.onclick = function() {
-           ds[i].mua = !ds[i].mua; hienThi();
-              };
-      // Nháy đúp để xóa
-       li.ondblclick = function() {
-         ds.splice(i, 1);hienThi();
+                // Nếu đã mua thì gạch ngang
+                if (ds[i].mua) {
+                    li.classList.add("purchased");
+                }
+                // Bấm một lần để đánh dấu đã mua
+                li.onclick = function() {
+                    ds[i].mua = !ds[i].mua;
+                    hienThi();
                 };
-         list.appendChild(li);
+                // Nháy đúp để xóa
+                li.ondblclick = function(e) {
+                    e.stopPropagation();
+                    ds.splice(i, 1);
+                    hienThi();
+                };
+                list.appendChild(li);
             }
             // Đếm món chưa mua
             let chuaMua = 0;
             for (let i = 0; i < ds.length; i++) {
-                if (!ds[i].mua) { chuaMua++;
+                if (!ds[i].mua) {
+                    chuaMua++;
                 }
             }
             document.getElementById("dem").innerText =
@@ -124,11 +134,10 @@
         }
         // Nhấn Enter để thêm
         document.getElementById("mon").onkeydown = function(e) {
-            if (e.key == "Enter") {
+            if (e.key === "Enter") {
                 themMon();
             }
         };
-
     </script>
 </body>
 </html>
