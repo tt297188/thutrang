@@ -16,24 +16,22 @@
     <input type="password" id="mat-khau" value="Thutrang05" maxlength="40" />
     <button type="button" id="btn-mat-khau">Hiện</button>
     <p id="demkytu"></p>
+
     <script>
-      //logis show password
       const oMatkhau = document.querySelector("#mat-khau");
       const nut = document.querySelector("#btn-mat-khau");
-      const demmkytu = document.querySelector("#dem-ky-tu");
+      const demkytu = document.querySelector("#demkytu");
+
       nut.addEventListener("click", () => {
         const dangAn = oMatkhau.type === "password";
         oMatkhau.type = dangAn ? "text" : "password";
         nut.textContent = dangAn ? "Ẩn" : "Hiện";
       });
-
       function capNhatsokytu() {
         const dodai = oMatkhau.value.length;
         demkytu.textContent = `Max ${dodai}/40`;
       }
-      oMatkhau.addEventListener("input", () => {
-        capNhatsokytu();
-      });
+      oMatkhau.addEventListener("input", capNhatsokytu);
       capNhatsokytu();
     </script>
   </body>
