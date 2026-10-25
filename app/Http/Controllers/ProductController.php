@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    public function index()
+    {
+        return view('product');
+    }
+
+    public function create(Request $request)
+    {
+        $title = $request->input('title');
+        $slug = $request->input('slug');
+        $description = $request->input('description');
+
+        if (is_null($title) || is_null($slug) || is_null($description)) {
+            return back()->withInput()->with(['message' => 'Phải nhập đủ 3 giá trị']);
+        }
+
+        return view('product_view', [
+            'title' => $title,
+            'slug' => $slug,
+            'description' => $description,
+        ]);
+
+    }
+}

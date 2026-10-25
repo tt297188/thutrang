@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Xoa du lieu cu de tranh bi trung khi chay lai
-        DB::table('comments')->delete();
         DB::table('posts')->delete();
         DB::table('users')->delete();
 
@@ -68,13 +67,6 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $users[$index]->id,
                 'title' => $bai['title'],
                 'content' => $bai['content'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            DB::table('comments')->insert([
-                'post_id' => $postId,
-                'content' => 'Binh luan mau cho bai viet: ' . $bai['title'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

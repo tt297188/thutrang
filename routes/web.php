@@ -1,16 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
+use Illuminate\Http\Request;
 
-Route::get('/posts', [PostController::class, 'index'])->name('post.index');
-Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
-Route::post('/posts', [PostController::class, 'store'])->name('post.store');
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('post.show');
-Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
-Route::put('/posts/{id}', [PostController::class, 'update'])->name('post.update');
-Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.destroy');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/post', [PostController::class, 'index'])->name('post.index');
+Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+// Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
+Route::post('/post', [PostController::class, 'store'])->name('post.store');
+Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
+Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
+Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');;
