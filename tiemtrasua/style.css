@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff8f2;
+    color: #333;
+}
+header {
+    background: #8b4513;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+header h1 {
+    margin: 0 0 15px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.banner {
+    text-align: center;
+    padding: 35px 15px;
+    background: #f5d4b5;
+}
+.banner h2 {
+    margin-top: 0;
+    color: #71380f;
+}
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 15px;
+}
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+input,
+textarea,
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.search-form input {
+    flex: 1;
+    min-width: 0;
+}
+button,
+.btn {
+    background: #8b4513;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+button:hover,
+.btn:hover {
+    background: #63300d;
+}
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.product {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 8px #00000012;
+}
+.product img,
+.no-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.no-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f7e6d7;
+    font-size: 65px;
+}
+.price {
+    color: #b54708;
+    font-weight: bold;
+    font-size: 20px;
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #8b4513;
+    color: white;
+    margin-top: 30px;
+}
+.form-box {
+    max-width: 500px;
+    margin: 25px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+}
+.form-box input,
+.form-box textarea,
+.form-box select {
+    width: 100%;
+    margin: 8px 0 15px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background: #f5d4b5;
+}
+@media (max-width: 600px) {
+    nav a {
+        display: inline-block;
+        margin: 6px;
+    }
+    .search-form {
+        flex-direction: column;
+    }
+}
