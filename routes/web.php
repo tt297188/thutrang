@@ -1,17 +1,59 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProductController;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\LogDailyCheck;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
+use App\Notifications\VerifyEmail as VerifyEmailNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\PasswordResetController;
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/article/{post}', [HomeController::class, 'show'])->name('article.show');
 
-Route::get('/post', [PostController::class, 'index'])->name('post.index');
-Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
-// Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
-Route::post('/post', [PostController::class, 'store'])->name('post.store');
-Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
-Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
-Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');;
+//Chỉ dành cho khách chưa đăng nhập
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+});
+
+//Chỉ dành cho người đã đăng nhập
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //Bài viết của tôi
+    Route::get('/post', [PostController::class, 'index'])->name('post.index');
+    Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::get('/post/{post}/edit', [PostController::class, 'edit'])->name('post.edit');
+    Route::put('/post/{post}', [PostController::class, 'update'])->name('post.update');
+    Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.destroy');
+
+    //Thùng rác xóa mềm. withTrashed() để tìm được cả bài đã bị xóa mềm
+    Route::get('/trash', [PostController::class, 'trash'])->name('post.trash');
+    Route::patch('/post/{post}/restore', [PostController::class, 'restore'])
+        ->name('post.restore')
+        ->withTrashed();
+    Route::delete('/post/{post}/force-delete', [PostController::class, 'forceDelete'])
+        ->name('post.force-delete')
+        ->withTrashed();
+
+    Route::post('/article/{post}/comments', [CommentController::class, 'store'])->name('comment.store');
+    Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
+});
+Route::get('/404', function () {
+    abort(404);
+});
+Route::middleware(['auth', LogDailyCheck::class])->group(function () {
+    // ...
+});

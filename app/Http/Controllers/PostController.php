@@ -2,64 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
-class PostController extends Controller
+class HomeController extends Controller
 {
-    // lấy tất cả 
-    public function index() {
-        $posts = Post::select('id', 'title', 'content', 'created_at', 'updated_at', 'deleted_at')
-        ->get(); // DB::table('posts')->where('title', 'like', '%Laravel%')->get();
-        return view('post_index', ['posts' => $posts]);
+    // Trang chủ hiển thị danh sách tất cả bài viết
+    public function index()
+    {
+        $posts = Post::latest()->paginate(6);
+        return view('home', compact('posts'));
     }
 
-    // lấy bải ghi theo id
-    public function show($id) {
-        $post = Post::select('id', 'title', 'content', 'created_at', 'updated_at')
-        ->where('id', $id)->first();
-        return view('post_show', ['post' => $post]);
-    }
-
-    public function create() {
-        return view('post_create');
-    }
-
-    public function store(Request $request) {
-        $post = new Post();
-        $post->user_id = 2;
-        $post->slug = Str::slug($request->title);
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->save();
-        return redirect()->route('post.index');
-    }
-
-    public function edit($id) {
-
-        $post = Post::select('id', 'title', 'content', 'created_at', 'updated_at')
-        ->where('id', $id)->first();
-        return view('post_edit', ['post' => $post]);
-    }
-
-    public function update(Request $request, $id) {
-        $post = Post::find($id);
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->save();
-        return redirect()->route('post.index');
-    }
-
-    public function destroy($id) {
-        $post = Post::withTrashed()->find($id);
-        if ($post->trashed()) {
-            $post->forceDelete();
-        } else {
-            $post->delete();
-        }
-        return redirect()->route('post.index');
+    // Xem chi tiết bài viết
+    public function show(Post $post)
+    {
+        // Nạp thêm thông tin comment kèm theo bài viết
+        $post->load('comments');
+        return view('post_show', compact('post'));
     }
 }

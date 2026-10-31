@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    // Trang chủ hiển thị danh sách tất cả bài viết
     public function index()
     {
-        $title = 'Trang chủ blog PHP';
-
-        return view('home', ['title' => $title]); // compact('title')
+        $posts = Post::latest()->paginate(6);
+        return view('home', compact('posts'));
     }
 
-    public function search(Request $request)
+    // Xem chi tiết bài viết
+    public function show(Post $post)
     {
-        var_dump($request->input('text', 'tungpn'));
+        // Nạp thêm thông tin comment kèm theo bài viết
+        $post->load('comments');
+        return view('post_show', compact('post'));
     }
 }
